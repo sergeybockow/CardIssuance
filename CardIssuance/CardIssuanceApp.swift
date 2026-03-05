@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct CardIssuanceApp: App {
+    @StateObject var coordinator = CardOrderCoordinator()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
