@@ -20,7 +20,7 @@ struct Address: Identifiable {
     let id: String
     let country: String
     let street: String
-    let city: [String]
+    let city: String
     let postCode: String
 }
 

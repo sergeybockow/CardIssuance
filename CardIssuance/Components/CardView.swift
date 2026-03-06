@@ -8,18 +8,24 @@
 import SwiftUI
 
 struct CardView: View {
+    @State private var isAnimating = false
+    
     let card: Card
+    let selectedColor: String?
     
     var body: some View {
         AsyncImage(url: URL(string: card.imageURL)) { phase in
             switch phase {
             case .empty:
-                ProgressView()
-                    .frame(height: 200)
+                ShimmerView()
             case .success(let image):
                 image
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
+                    .overlay(
+                        Color.fromString(selectedColor ?? "")
+                            .opacity(0.3)
+                    )
             case .failure:
                 Image(systemName: "creditcard")
                     .resizable()
@@ -30,5 +36,7 @@ struct CardView: View {
                 EmptyView()
             }
         }
+        .aspectRatio(1.586, contentMode: .fit)
+        .cornerRadius(12)
     }
 }

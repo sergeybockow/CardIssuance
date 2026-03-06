@@ -7,15 +7,25 @@
 
 import Combine
 
-class CardSelectionViewModel: ObservableObject {
+final class CardSelectionViewModel: ObservableObject {
+    
+    // MARK: - Properties
+    
     let cards: [Card] = Card.mockData()
     
-    @Published var currentCard: Card?
-    @Published var selectedCard: Card?
-    
+    @Published var currentCard: Card? {
+        didSet {
+            selectedColor = currentCard?.colors.first
+        }
+    }
+    @Published private(set) var selectedCard: Card?
+    @Published var selectedColor: String?
+        
     init() {
         currentCard = cards.first
     }
+    
+    // MARK: - Methods
     
     func selectCard(_ card: Card) {
         selectedCard = card

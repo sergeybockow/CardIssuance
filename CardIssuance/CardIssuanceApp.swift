@@ -14,6 +14,7 @@ struct CardIssuanceApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(coordinator)
         }
     }
 }

@@ -7,9 +7,27 @@
 
 import Combine
 
-class CardOrderCoordinator: ObservableObject {
-    @Published var selectedCard: Card?
-    @Published var selectedColor: String?
-    @Published var address: Address?
-    @Published var orderStatus: OrderStatus?
+final class CardOrderCoordinator: ObservableObject {
+    
+    // MARK: - Properties
+    
+    @Published private(set) var selectedCard: Card?
+    @Published private(set) var selectedColor: String?
+    @Published private(set) var address: Address?
+    @Published private(set) var orderStatus: OrderStatus?
+    
+    // MARK: - Methods
+
+    func selectCard(_ card: Card) {
+        selectedCard = card
+    }
+
+    func selectColor(_ color: String) {
+        selectedColor = color
+    }
+
+    func setAddress(_ address: Address) {
+        self.address = address
+    }
 }
+
