@@ -20,14 +20,26 @@ struct DeliveryAddressView: View {
     var body: some View {
         VStack {
             // заглушка карты
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.gray.opacity(0.3))
-                .frame(height: 200)
-                .overlay(
-                    Image(systemName: "map")
-                        .font(.largeTitle)
-                        .foregroundColor(.gray)
-                )
+            AsyncImage(url: URL(string: "https://avatars.mds.yandex.net/i?id=685588ba7b8751f79a13fc641cb8edee_l-10496575-images-thumbs&n=13")) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 200)
+                        .cornerRadius(12)
+                        .clipped()
+                default:
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 200)
+                        .overlay(
+                            Image(systemName: "map")
+                                .font(.largeTitle)
+                                .foregroundColor(.gray)
+                        )
+                }
+            }
             if let address = coordinator.address {
                 AddressView(address: address)
             } else {
