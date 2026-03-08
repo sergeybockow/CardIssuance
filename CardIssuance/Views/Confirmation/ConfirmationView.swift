@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct ConfirmationView: View {
+    
+    // MARK: - Properties
+    
     @State private var showSuccess = false
     @EnvironmentObject var coordinator: CardOrderCoordinator
     @Environment(\.dismiss) var dismiss
     
+    // MARK: - Body
     
     var body: some View {
         VStack {
@@ -48,4 +52,11 @@ struct ConfirmationView: View {
             .presentationDetents([.fraction(0.3)])
         }
     }
+}
+
+// MARK: - Preview
+
+#Preview {
+    ConfirmationView()
+        .environmentObject(CardOrderCoordinator())
 }

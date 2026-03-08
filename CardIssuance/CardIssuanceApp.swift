@@ -17,4 +17,9 @@ struct CardIssuanceApp: App {
                 .environmentObject(coordinator)
         }
     }
+    
+    init() {
+        URLCache.shared.memoryCapacity = 50 * 1024 * 1024
+        URLCache.shared.diskCapacity = 100 * 1024 * 1024
+    }
 }

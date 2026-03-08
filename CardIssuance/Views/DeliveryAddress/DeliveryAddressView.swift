@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct DeliveryAddressView: View {
+    
+    // MARK: - Properties
+    
     @EnvironmentObject var coordinator: CardOrderCoordinator
     @State private var navigateToConfirmation = false
     @State private var navigateToAddressForm = false
+    
+    // MARK: - Body
     
     var body: some View {
         VStack {
@@ -46,4 +51,11 @@ struct DeliveryAddressView: View {
             AddressFormView()
         }
     }
+}
+
+// MARK: - Preview
+
+#Preview {
+    DeliveryAddressView()
+        .environmentObject(CardOrderCoordinator())
 }

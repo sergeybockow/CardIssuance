@@ -11,7 +11,9 @@ final class CardSelectionViewModel: ObservableObject {
     
     // MARK: - Properties
     
-    let cards: [Card] = Card.mockData()
+    private let cardService = CardService()
+    
+    let cards: [Card]
     
     @Published var currentCard: Card? {
         didSet {
@@ -22,6 +24,7 @@ final class CardSelectionViewModel: ObservableObject {
     @Published var selectedColor: String?
         
     init() {
+        cards = cardService.fetchCards()
         currentCard = cards.first
     }
     

@@ -8,35 +8,25 @@
 import SwiftUI
 
 struct AddressFormView: View {
+    @StateObject private var viewModel = AddressFormViewModel()
+    
     @EnvironmentObject var coordinator: CardOrderCoordinator
     @Environment(\.dismiss) var dismiss
     
-    @State private var navigateToDelivery = false
-    @State private var country = ""
-    @State private var city = ""
-    @State private var street = ""
-    @State private var postcode = ""
-    @State private var phone = ""
-    
     var body: some View {
         List {
-            FormTextField(placeholder: "Country", text: $country)
-            FormTextField(placeholder: "City", text: $city)
-            FormTextField(placeholder: "Street", text: $street)
-            FormTextField(placeholder: "Postcode", text: $postcode, keyboardType: .numberPad)
-            FormTextField(placeholder: "+7 (___) ___-__-__", text: $phone, keyboardType: .phonePad)
+            FormTextField(placeholder: "Country", text: $viewModel.country)
+            FormTextField(placeholder: "City", text: $viewModel.city)
+            FormTextField(placeholder: "Street", text: $viewModel.street)
+            FormTextField(placeholder: "Postcode", text: $viewModel.postcode, keyboardType: .numberPad)
+            FormTextField(placeholder: "+7 (___) ___-__-__", text: $viewModel.phone, keyboardType: .phonePad, isValid: viewModel.isPhoneValid)
             
             PrimaryButton(title: "Save address", style: .primary) {
-                let newAddress = Address(
-                    id: UUID().uuidString,
-                    country: country,
-                    street: street,
-                    city: city,
-                    postCode: postcode
-                )
-                coordinator.setAddress(newAddress)
+                coordinator.setAddress(viewModel.saveAddress())
                 dismiss()
             }
+            .disabled(!viewModel.isFormValid)
+            .opacity(viewModel.isFormValid ? 1.0 : 0.5)
         }
         .listStyle(.insetGrouped)
         .scrollDismissesKeyboard(.interactively)
