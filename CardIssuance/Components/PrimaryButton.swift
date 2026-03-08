@@ -15,7 +15,6 @@ struct PrimaryButton: View {
     let style: ButtonStyle
     let action: () -> Void
     
-    @State private var isPressed = false
     @Environment(\.colorScheme) var colorScheme
     
     var backgroundColor: Color {
@@ -44,24 +43,23 @@ struct PrimaryButton: View {
     // MARK: - Body
     
     var body: some View {
-        Text(title)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(backgroundColor)
-            .foregroundColor(foregroundColor)
-            .cornerRadius(12)
-            .contentShape(Rectangle())
-            .scaleEffect(isPressed ? 0.95 : 1.0)
-            .animation(.spring(duration: 0.2), value: isPressed)
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { _ in isPressed = true }
-                    .onEnded { _ in
-                        isPressed = false
-                        action()
-                    }
-            )
-            .padding(.horizontal, 16)
+        Button(action: action) {
+            Text(title)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(backgroundColor)
+                .foregroundColor(foregroundColor)
+                .cornerRadius(12)
+        }
+        .buttonStyle(ScaleButtonStyle())
+        .padding(.horizontal, 16)
     }
+}
 
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.spring(duration: 0.2), value: configuration.isPressed)
+    }
 }

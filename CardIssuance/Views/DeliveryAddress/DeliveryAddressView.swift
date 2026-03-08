@@ -10,6 +10,7 @@ import SwiftUI
 struct DeliveryAddressView: View {
     @EnvironmentObject var coordinator: CardOrderCoordinator
     @State private var navigateToConfirmation = false
+    @State private var navigateToAddressForm = false
     
     var body: some View {
         VStack {
@@ -33,13 +34,16 @@ struct DeliveryAddressView: View {
             }
             
             PrimaryButton(title: "Change address", style: .secondary) {
-                
+                navigateToAddressForm = true
             }
         }
         .padding()
         .navigationTitle("Delivery Address")
         .navigationDestination(isPresented: $navigateToConfirmation) {
             ConfirmationView()
+        }
+        .navigationDestination(isPresented: $navigateToAddressForm) {
+            AddressFormView()
         }
     }
 }
