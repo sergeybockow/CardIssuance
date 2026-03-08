@@ -9,32 +9,37 @@ import SwiftUI
 
 struct DeliveryAddressView: View {
     @EnvironmentObject var coordinator: CardOrderCoordinator
+    @State private var navigateToConfirmation = false
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                // заглушка карты
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(height: 200)
-                    .overlay(
-                        Image(systemName: "map")
-                            .font(.largeTitle)
-                            .foregroundColor(.gray)
-                    )
-                if let address = coordinator.address {
-                    Text(address.street)
-                    Text(address.city)
-                    Text(address.country)
-                } else {
-                    Text("No address selected")
+        VStack {
+            // заглушка карты
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.gray.opacity(0.3))
+                .frame(height: 200)
+                .overlay(
+                    Image(systemName: "map")
+                        .font(.largeTitle)
                         .foregroundColor(.gray)
-                }
-                Button("Confirm address") { }
-                Button("Change address") { }
+                )
+            if let address = coordinator.address {
+                AddressView(address: address)
+            } else {
+                Text("No address selected")
+                    .foregroundColor(.gray)
             }
-            .padding()
-            .navigationTitle("Delivery Address")
+            PrimaryButton(title: "Confirm address", style: .primary) {
+                navigateToConfirmation = true
+            }
+            
+            PrimaryButton(title: "Change address", style: .secondary) {
+                
+            }
+        }
+        .padding()
+        .navigationTitle("Delivery Address")
+        .navigationDestination(isPresented: $navigateToConfirmation) {
+            ConfirmationView()
         }
     }
 }

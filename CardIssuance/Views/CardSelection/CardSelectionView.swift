@@ -14,13 +14,11 @@ struct CardSelectionView: View {
     private enum Constants {
         static let cardHeight: CGFloat = 200
         static let colorCircleSize: CGFloat = 50
-        static let buttonCornerRadius: CGFloat = 12
     }
     
     // MARK: - Properties
     
     @EnvironmentObject var coordinator: CardOrderCoordinator
-    @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel = CardSelectionViewModel()
     @State private var navigateToDelivery = false
     
@@ -46,18 +44,12 @@ struct CardSelectionView: View {
                     
                     ColorPickerView(colors: card.colors, selectedColor: $viewModel.selectedColor)
                     
-                    Button("Select card · \(card.price)") {
+                    PrimaryButton(title: "Select card · \(card.price)", style: .primary) {
                         viewModel.selectCard(card)
                         coordinator.selectCard(card)
                         coordinator.selectColor(viewModel.selectedColor ?? "")
                         navigateToDelivery = true
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(colorScheme == .dark ? Color(red: 0.9, green: 0.9, blue: 0.9) : Color.black)
-                    .foregroundColor(colorScheme == .dark ? .black : .white)
-                    .cornerRadius(Constants.buttonCornerRadius)
-                    .padding(.horizontal, 16)
                 }
             }
             .padding(.horizontal)

@@ -13,8 +13,14 @@ final class CardOrderCoordinator: ObservableObject {
     
     @Published private(set) var selectedCard: Card?
     @Published private(set) var selectedColor: String?
-    @Published private(set) var address: Address?
     @Published private(set) var orderStatus: OrderStatus?
+    @Published private(set) var address: Address? = Address(
+        id: "1",
+        country: "Russia",
+        street: "Pushkina 12",
+        city: "Moscow",
+        postCode: "101000"
+    )
     
     // MARK: - Methods
 

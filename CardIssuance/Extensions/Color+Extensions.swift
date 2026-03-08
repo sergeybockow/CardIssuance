@@ -10,7 +10,7 @@ import SwiftUI
 extension Color {
     static func fromString(_ name: String) -> Color {
         switch name.lowercased() {
-        case "none": return .clear
+        case "none": return Color.gray.opacity(0.2)
         case "red": return .red
         case "yellow": return .yellow
         case "white": return .white
