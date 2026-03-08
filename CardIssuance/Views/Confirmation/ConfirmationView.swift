@@ -12,6 +12,7 @@ struct ConfirmationView: View {
     // MARK: - Properties
     
     @State private var showSuccess = false
+    @State private var showAddressError = false
     @EnvironmentObject var coordinator: CardOrderCoordinator
     @Environment(\.dismiss) var dismiss
     
@@ -19,16 +20,47 @@ struct ConfirmationView: View {
     
     var body: some View {
         VStack {
-            if let card = coordinator.selectedCard {
-                CardView(card: card, selectedColor: coordinator.selectedColor)
-            }
-            
-            if let address = coordinator.address {
-                AddressView(address: address)
-            }
-            
-            PrimaryButton(title: "Place order", style: .primary) {
-                showSuccess = true
+            Group {
+                if let card = coordinator.selectedCard {
+                    CardView(card: card, selectedColor: coordinator.selectedColor)
+                }
+                
+                if let address = coordinator.address {
+                    AddressView(address: address)
+                }
+                
+                switch coordinator.orderStatus {
+                case .none:
+                    PrimaryButton(title: "Place order", style: .primary) {
+                        if coordinator.address == nil {
+                            showAddressError = true
+                        } else {
+                            coordinator.updateStatus(.issued)
+                            showSuccess = true
+                        }
+                    }
+                    
+                    if showAddressError {
+                        Text("Please add delivery address first")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+                case .issued:
+                    Text("Order placed ✓")
+                        .foregroundColor(.blue)
+                    PrimaryButton(title: "Cancel order", style: .secondary) {
+                        coordinator.updateStatus(.cancelled)
+                    }
+                case .cancelled:
+                    Text("Order cancelled ✗")
+                        .foregroundColor(.red)
+                case .inDelivery:
+                    Text("In delivery 🚚")
+                        .foregroundColor(.orange)
+                case .delivered:
+                    Text("Delivered ✓")
+                        .foregroundColor(.green)
+                }
             }
             
             PrimaryButton(title: "Back", style: .secondary) {

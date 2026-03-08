@@ -16,7 +16,7 @@ struct Card: Identifiable, Hashable {
     let imageURL: String
 }
 
-struct Address: Identifiable {
+struct Address: Identifiable, Codable {
     let id: String
     let country: String
     let street: String
