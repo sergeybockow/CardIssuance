@@ -10,27 +10,43 @@ import XCTest
 
 final class CardIssuanceTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    // Тест: форма невалидна когда все поля пустые
+    func testFormIsInvalidWhenEmpty() {
+        let isValid = validateForm(country: "", city: "", street: "", postcode: "", phone: "")
+        XCTAssertFalse(isValid)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    // Тест: форма невалидна если телефон короче 11 цифр
+    func testFormIsInvalidWithShortPhone() {
+        let isValid = validateForm(country: "Russia", city: "Moscow", street: "Pushkina 12", postcode: "101000", phone: "123")
+        XCTAssertFalse(isValid)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    // Тест: форма валидна когда все поля заполнены корректно
+    func testFormIsValidWhenAllFieldsFilled() {
+        let isValid = validateForm(country: "Russia", city: "Moscow", street: "Pushkina 12", postcode: "101000", phone: "79991234567")
+        XCTAssertTrue(isValid)
+    }
+    
+    // Тест: моковые данные не пустые
+    func testMockDataNotEmpty() {
+        XCTAssertFalse(Card.mockData().isEmpty)
+    }
+    
+    // Тест: адрес создаётся с правильными данными
+    func testAddressCreation() {
+        let address = Address(id: "1", country: "Russia", street: "Pushkina", city: "Moscow", postCode: "101000")
+        XCTAssertEqual(address.city, "Moscow")
+        XCTAssertEqual(address.country, "Russia")
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    // MARK: - Private
+    
+    private func validateForm(country: String, city: String, street: String, postcode: String, phone: String) -> Bool {
+        !country.isEmpty &&
+        !city.isEmpty &&
+        !street.isEmpty &&
+        !postcode.isEmpty &&
+        phone.filter { $0.isNumber }.count == 11
     }
-
 }

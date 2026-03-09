@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct CardIssuanceApp: App {
+    @StateObject var coordinator = CardOrderCoordinator()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(coordinator)
         }
+    }
+    
+    init() {
+        URLCache.shared.memoryCapacity = 50 * 1024 * 1024
+        URLCache.shared.diskCapacity = 100 * 1024 * 1024
     }
 }
